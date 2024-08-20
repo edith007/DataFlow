@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+
+# Node.js dependencies
+node_modules/
+
+# Python bytecode
+__pycache__/
+
+# macOS specific files
+.DS_Store
+
+# Log files
+*.log
+
+# Environment variables
+*.env
+
+# Yarn lockfile (optional, if you're using yarn)
+yarn.lock
+
+# NPM debug file
+npm-debug.log*
+
+# Docker files
+**/Dockerfile
+
+# Frontend build files
+/build
