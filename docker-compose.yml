@@ -4,11 +4,13 @@ services:
   backend:
     build: ./backend
     ports:
-      - "5001:5000"
+      - "5001:5001"
     environment:
       FLASK_ENV: development
       FLASK_APP: run.py
-      DATABASE_URL: postgresql://postgres:password@db:5432/pipelinedb
+      DATABASE_URL: postgresql://postgres:password@db:5432/dataflow
+    volumes:
+      - ./backend:/app
     depends_on:
       - db
 
@@ -24,6 +26,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: pipelinedb
+      POSTGRES_DB: dataflow
     ports:
       - "5432:5432"
