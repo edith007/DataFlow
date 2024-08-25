@@ -1,0 +1,2 @@
+target-csv
+singer-python==2.1.4

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
@@ -8,7 +6,7 @@ services:
     environment:
       FLASK_ENV: development
       FLASK_APP: run.py
-      DATABASE_URL: postgresql://postgres:password@db:5432/dataflow
+      DATABASE_URL: postgresql://postgres:mysecretpassword@db:5432/dataflow
     volumes:
       - ./backend:/app
     depends_on:
@@ -21,11 +19,59 @@ services:
     depends_on:
       - backend
 
+  tap-mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile-tap-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: edith
+    volumes:
+      - ./backend/config:/app/backend/config
+    depends_on:
+      mysql:
+        condition: service_healthy
+    entrypoint: ["/app/wait-for-mysql.sh", "mysql"]
+    command: sh -c 'MYSQL_PWD=edith tap-mysql --config /app/backend/config/tap-mysql-csv-config.json | nc -l -p 9999'
+
+  target-csv:
+    build:
+      context: .
+      dockerfile: Dockerfile-target-csv
+    volumes:
+      - ./backend/config:/app/backend/config
+      - ./backend/output:/app/backend/output
+    depends_on:
+      - tap-mysql
+    command: sh -c 'nc localhost 9999 | target-csv --config /app/backend/config/target-csv-config.json'
+
   db:
     image: postgres:13
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: dataflow
     ports:
       - "5432:5432"
+
+  mysql:
+    image: mysql/mysql-server:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: edith
+      MYSQL_DATABASE: dataflow
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    networks:
+      - default
+    volumes:
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    driver: bridge

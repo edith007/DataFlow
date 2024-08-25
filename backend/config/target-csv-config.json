@@ -1,0 +1,5 @@
+{
+    "delimiter": ",",
+    "quotechar": "\"",
+    "path": "/app/backend/output/"
+}

@@ -1,5 +1,7 @@
 # Virtual environment
 venv/
+tap-mysql-env/
+target-csv-env/
 
 # Node.js dependencies
 node_modules/
@@ -22,8 +24,6 @@ yarn.lock
 # NPM debug file
 npm-debug.log*
 
-# Docker files
-**/Dockerfile
-
 # Frontend build files
 /build
+
