@@ -17,4 +17,5 @@ RUN pip install --no-cache-dir -r requirements-tap.txt
 COPY . .
 COPY wait-for-mysql.sh /app/wait-for-mysql.sh
 RUN chmod +x /app/wait-for-mysql.sh
-CMD ["sh", "-c", "./wait-for-mysql.sh mysql && tap-mysql --config /app/backend/config/tap-mysql-csv-config.json"]
+
+CMD ["sh", "-c", "MYSQL_PWD=edith ./wait-for-mysql.sh mysql && MYSQL_PWD=edith tap-mysql --config /app/backend/config/tap-mysql-csv-config.json"]
