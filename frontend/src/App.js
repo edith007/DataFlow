@@ -1,19 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import CreatePipeline from './components/CreatePipeline';
+import PipelineDetails from './components/PipelineDetails';
 
 function App() {
   return (
-    <div className="text-center">
-      <h1 className="text-4xl font-bold text-blue-600">
-        Welcome to DataFlow!
-      </h1>
-      <p className="mt-4 text-gray-500">
-        This is a test to ensure TailwindCSS is working correctly.
-      </p>
-    </div>
+    <Router>
+      <div className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/create" element={<CreatePipeline />} />
+          <Route path="/pipeline/:id" element={<PipelineDetails />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
-
