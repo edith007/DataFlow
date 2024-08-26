@@ -28,7 +28,7 @@ def fetch_data(source):
     
     return data
 
-def transform_data(data, source_type):
+def transform_data(data):
     """
     Currently, no transformations are applied.
     """
@@ -53,16 +53,6 @@ def run_pipeline(pipeline_id):
         raise ValueError(f"Pipeline with ID {pipeline_id} does not exist.")
     
     try:
-        # Determine the source type
-        if pipeline.source.endswith('.csv'):
-            source_type = 'csv'
-        elif pipeline.source.endswith('.json'):
-            source_type = 'json'
-        elif pipeline.source.startswith('http://') or pipeline.source.startswith('https://'):
-            source_type = 'api'
-        else:
-            raise ValueError("Unsupported source type.")
-        
         data = fetch_data(pipeline.source)
         # No transformation step is applied here
         load_data(data, pipeline.destination, pipeline.name)

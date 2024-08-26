@@ -17,27 +17,21 @@ def get_pipelines():
 def create_pipeline():
     data = request.get_json()
 
-    # Validate the data_type
-    if 'data_type' not in data or data['data_type'] not in ['csv', 'json', 'api']:
-        return jsonify({'error': 'Invalid data_type. Must be "csv", "json", or "api".'}), 400
-
-    # Check if a pipeline with the same name, source/destination, and data_type already exists
+    # Check if a pipeline with the same name, source, and destination already exists
     existing_pipeline = Pipeline.query.filter_by(
         name=data['name'],
         source=data['source'],
-        destination=data['destination'],
-        data_type=data['data_type']  # Include data_type in the duplicate check
+        destination=data['destination']
     ).first()
 
     if existing_pipeline:
-        return jsonify({'error': 'A pipeline with the same name, configuration, and data_type already exists.'}), 409
+        return jsonify({'error': 'A pipeline with the same name and configuration already exists.'}), 409
 
     pipeline = Pipeline(
         name=data['name'],
         description=data['description'],
         source=data['source'],
-        destination=data['destination'],
-        data_type=data['data_type']  # Include data_type in the pipeline creation
+        destination=data['destination']
     )
     db.session.add(pipeline)
     db.session.commit()
