@@ -9,7 +9,9 @@ const PipelineDetails = () => {
 
   useEffect(() => {
     axios.get(`/pipelines/${id}`)
-      .then(response => setPipeline(response.data))
+      .then(response => {
+        setPipeline(response.data);
+      })
       .catch(error => console.error('Error fetching pipeline details:', error));
   }, [id]);
 

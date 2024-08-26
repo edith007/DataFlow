@@ -12,7 +12,7 @@ const CreatePipeline = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newPipeline = { name, description, source, destination };
-    axios.post('/api/pipelines', newPipeline)
+    axios.post('/pipelines', newPipeline)
       .then(response => navigate('/'))
       .catch(error => console.error('Error creating pipeline:', error));
   };

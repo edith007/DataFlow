@@ -6,19 +6,19 @@ const Dashboard = () => {
   const [pipelines, setPipelines] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/pipelines')
+    axios.get('/pipelines')
       .then(response => setPipelines(response.data))
       .catch(error => console.error('Error fetching pipelines:', error));
   }, []);
 
   const deletePipeline = (id) => {
-    axios.delete(`/api/pipelines/${id}`)
+    axios.delete(`/pipelines/${id}`)
       .then(() => setPipelines(pipelines.filter(pipeline => pipeline.id !== id)))
       .catch(error => console.error('Error deleting pipeline:', error));
   };
 
   const runPipeline = (id) => {
-    axios.post('/api/pipelines/run', { id })
+    axios.post(`/pipelines/run/${id}`)
       .then(() => console.log('Pipeline running'))
       .catch(error => console.error('Error running pipeline:', error));
   };
@@ -36,7 +36,7 @@ const Dashboard = () => {
               <li key={pipeline.id} className="border p-4 mb-2">
                 <h2 className="text-xl font-semibold">{pipeline.name}</h2>
                 <p>Status: {pipeline.status}</p>
-                <p>Last Run: {pipeline.last_run_time}</p>
+                <p>Last Run: {pipeline.last_run}</p>
                 <div className="mt-2">
                   <Link to={`/pipeline/${pipeline.id}`} className="text-blue-500 mr-4">View</Link>
                   <button className="text-red-500 mr-4" onClick={() => deletePipeline(pipeline.id)}>Delete</button>
