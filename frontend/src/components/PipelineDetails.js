@@ -29,7 +29,7 @@ const PipelineDetails = () => {
       axios.delete(`/pipelines/${id}`)
         .then(() => {
           alert('Pipeline deleted successfully!');
-          navigate('/');
+          navigate('/pipeline');
         })
         .catch(error => {
           console.error('Error deleting pipeline:', error);
@@ -42,11 +42,16 @@ const PipelineDetails = () => {
 
   return (
     <div>
+      <nav className="flex justify-between p-4 bg-blue-500 text-white">
+        <button onClick={() => navigate('/')}>Home</button>
+        <button onClick={() => navigate('/pipeline')}>Pipelines</button>
+      </nav>
       <h1 className="text-3xl font-bold mb-4">Pipeline Details</h1>
       <p><strong>Name:</strong> {pipeline.name}</p>
       <p><strong>Description:</strong> {pipeline.description}</p>
       <p><strong>Source:</strong> {pipeline.source}</p>
       <p><strong>Destination:</strong> {pipeline.destination}</p>
+      <p><strong>Status:</strong> {pipeline.status}</p>
       <div className="mt-4">
         <button 
           onClick={runPipeline} 

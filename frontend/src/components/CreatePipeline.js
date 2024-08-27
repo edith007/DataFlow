@@ -7,7 +7,7 @@ const CreatePipeline = () => {
   const [description, setDescription] = useState('');
   const [sourceType, setSourceType] = useState('');
   const [source, setSource] = useState('');
-  const [destination, setDestination] = useState('');
+  const [destination, setDestination] = useState('postgresql://postgres:mysecretpassword@db:5432/dataflow');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const CreatePipeline = () => {
     axios.post('/pipelines', newPipeline)
       .then(response => {
         alert(`Pipeline ${response.data.name} created successfully!`);
-        navigate('/pipelines');
+        navigate('/pipeline');
       })
       .catch(error => {
         console.error('Error creating pipeline:', error);
@@ -25,26 +25,11 @@ const CreatePipeline = () => {
       });
   };
 
-  const handleRunPipeline = (id) => {
-    axios.post(`/pipelines/run/${id}`)
-      .then(response => {
-        alert('Pipeline is running successfully!');
-      })
-      .catch(error => {
-        if (error.response && error.response.data && error.response.data.error) {
-          alert(`Failed to run pipeline: ${error.response.data.error}`);
-        } else {
-          alert('Failed to run the pipeline. Please try again later.');
-        }
-        console.error('Error running pipeline:', error);
-      });
-  };
-
   return (
     <div className="space-y-6 max-w-md mx-auto">
       <nav className="flex justify-between p-4 bg-blue-500 text-white">
         <button onClick={() => navigate('/')}>Home</button>
-        <button onClick={() => navigate('/pipelines')}>Pipelines</button>
+        <button onClick={() => navigate('/pipeline')}>Pipelines</button>
       </nav>
       <h1 className="text-3xl font-bold mb-6">Create New Pipeline</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,14 +92,16 @@ const CreatePipeline = () => {
         </div>
         <div>
           <label className="block text-sm font-medium">Destination</label>
-          <input 
-            type="text" 
+          <select 
             value={destination} 
             onChange={(e) => setDestination(e.target.value)} 
             className="w-full border px-3 py-2 rounded-md"
-            placeholder="Enter PostgreSQL connection string"
             required
-          />
+          >
+            <option value="postgresql://postgres:mysecretpassword@db:5432/dataflow">
+              postgresql://postgres:mysecretpassword@db:5432/dataflow
+            </option>
+          </select>
         </div>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md w-full">Save Pipeline</button>
