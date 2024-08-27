@@ -41,41 +41,42 @@ const PipelineDetails = () => {
   if (!pipeline) return <p>Loading...</p>;
 
   return (
-    <div>
-      <nav className="flex justify-between p-4 bg-blue-500 text-white">
-        <button onClick={() => navigate('/')}>Home</button>
-        <button onClick={() => navigate('/pipeline')}>Pipelines</button>
+    <div className="min-h-screen flex flex-col items-center justify-start">
+      <nav className="w-full flex justify-start p-4 bg-blue-500 text-white">
+        <button onClick={() => navigate('/')} className="text-lg font-semibold">Home</button>
       </nav>
-      <h1 className="text-3xl font-bold mb-4">Pipeline Details</h1>
-      <p><strong>Name:</strong> {pipeline.name}</p>
-      <p><strong>Description:</strong> {pipeline.description}</p>
-      <p><strong>Source:</strong> {pipeline.source}</p>
-      <p><strong>Destination:</strong> {pipeline.destination}</p>
-      <p><strong>Status:</strong> 
-        <span className={`ml-2 px-2 py-1 rounded text-white ${
-          pipeline.status === 'Running' ? 'bg-yellow-500' :
-          pipeline.status === 'Completed' ? 'bg-green-500' :
-          pipeline.status === 'Failed' ? 'bg-red-500' : 'bg-gray-500'
-        }`}>
-          {pipeline.status}
-        </span>
-      </p>
-      <div className="mt-4">
-        <button 
-          onClick={runPipeline} 
-          className="bg-green-500 text-white px-4 py-2 rounded mr-4">
-          Run Pipeline
-        </button>
-        <button 
-          onClick={() => navigate(`/edit/${pipeline.id}`)} 
-          className="bg-blue-500 text-white px-4 py-2 rounded mr-4">
-          Edit Pipeline
-        </button>
-        <button 
-          onClick={deletePipeline} 
-          className="bg-red-500 text-white px-4 py-2 rounded">
-          Delete Pipeline
-        </button>
+      <h1 className="text-4xl font-bold my-8">Pipeline Details</h1>
+      <div className="bg-white shadow-md rounded-lg p-6 max-w-3xl w-full">
+        <p className="text-xl mb-2"><strong>Name:</strong> {pipeline.name}</p>
+        <p className="text-lg mb-2"><strong>Description:</strong> {pipeline.description}</p>
+        <p className="text-lg mb-2"><strong>Source:</strong> {pipeline.source}</p>
+        <p className="text-lg mb-2"><strong>Destination:</strong> {pipeline.destination}</p>
+        <p className="text-lg mb-4"><strong>Status:</strong>
+          <span className={`ml-2 px-3 py-1 rounded-full text-white ${
+            pipeline.status === 'Running' ? 'bg-yellow-500' :
+            pipeline.status === 'Completed' ? 'bg-green-500' :
+            pipeline.status === 'Failed' ? 'bg-red-500' : 'bg-gray-500'
+          }`}>
+            {pipeline.status}
+          </span>
+        </p>
+        <div className="flex space-x-4">
+          <button
+            onClick={runPipeline}
+            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200">
+            Run Pipeline
+          </button>
+          <button
+            onClick={() => navigate(`/edit/${pipeline.id}`)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+            Edit Pipeline
+          </button>
+          <button
+            onClick={deletePipeline}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">
+            Delete Pipeline
+          </button>
+        </div>
       </div>
     </div>
   );

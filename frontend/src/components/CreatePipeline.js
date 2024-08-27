@@ -104,7 +104,7 @@ const CreatePipeline = () => {
           </select>
         </div>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md w-full">Save Pipeline</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md w-full hover:bg-blue-600 transition duration-200">Save Pipeline</button>
       </form>
     </div>
   );

@@ -42,39 +42,35 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <nav className="flex justify-between p-4 bg-blue-500 text-white">
-        <button onClick={() => navigate('/')}>Home</button>
-        <button onClick={() => navigate('/pipeline')}>Pipelines</button>
+    <div className="min-h-screen flex flex-col items-center justify-start">
+      <nav className="w-full flex justify-start p-4 bg-blue-500 text-white">
+        <button onClick={() => navigate('/')} className="text-lg font-semibold">Home</button>
       </nav>
-      <h1 className="text-4xl font-bold mb-4">Pipeline Dashboard</h1>
-      <Link to="/create" className="bg-blue-500 text-white px-4 py-2 rounded">Create New Pipeline</Link>
-      <div className="mt-4">
+      <h1 className="text-4xl font-bold my-8">Pipeline Dashboard</h1>
+      <div className="grid grid-cols-1 gap-6 w-full max-w-4xl">
         {pipelines.length === 0 ? (
-          <p>No pipelines available.</p>
+          <p className="text-xl">No pipelines available.</p>
         ) : (
-          <ul>
-            {pipelines.map(pipeline => (
-              <li key={pipeline.id} className="border p-4 mb-2">
-                <h2 className="text-xl font-semibold">{pipeline.name}</h2>
-                <p>Status: 
-                  <span className={`ml-2 px-2 py-1 rounded text-white ${
-                    pipeline.status === 'Running' ? 'bg-yellow-500' :
-                    pipeline.status === 'Completed' ? 'bg-green-500' :
-                    pipeline.status === 'Failed' ? 'bg-red-500' : 'bg-gray-500'
-                  }`}>
-                    {pipeline.status}
-                  </span>
-                </p>
-                <p>Last Run: {pipeline.last_run}</p>
-                <div className="mt-2">
-                  <Link to={`/pipeline/${pipeline.id}`} className="text-blue-500 mr-4">View</Link>
-                  <button className="text-red-500 mr-4" onClick={() => deletePipeline(pipeline.id)}>Delete</button>
-                  <button className="text-green-500" onClick={() => runPipeline(pipeline.id)}>Run</button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          pipelines.map(pipeline => (
+            <div key={pipeline.id} className="border p-4 rounded-lg shadow-md bg-white">
+              <h2 className="text-2xl font-semibold mb-2">{pipeline.name}</h2>
+              <p className="mb-1">Status:
+                <span className={`ml-2 px-3 py-1 rounded-full text-white ${
+                  pipeline.status === 'Running' ? 'bg-yellow-500' :
+                  pipeline.status === 'Completed' ? 'bg-green-500' :
+                  pipeline.status === 'Failed' ? 'bg-red-500' : 'bg-gray-500'
+                }`}>
+                  {pipeline.status}
+                </span>
+              </p>
+              <p className="mb-4">Last Run: {pipeline.last_run}</p>
+              <div className="flex space-x-4">
+                <Link to={`/pipeline/${pipeline.id}`} className="bg-blue-500 text-white px-4 py-2 rounded-lg text-lg">View</Link>
+                <button onClick={() => deletePipeline(pipeline.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg text-lg">Delete</button>
+                <button onClick={() => runPipeline(pipeline.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg text-lg">Run</button>
+              </div>
+            </div>
+          ))
         )}
       </div>
     </div>
