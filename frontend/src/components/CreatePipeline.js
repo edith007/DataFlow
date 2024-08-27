@@ -11,6 +11,10 @@ const CreatePipeline = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
+  const handlePaste = () => {
+    navigator.clipboard.readText().then(text => setSource(text));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newPipeline = { name, description, source, destination };
@@ -80,13 +84,23 @@ const CreatePipeline = () => {
             </div>
           ) : (
             <div>
-              <label className="block text-sm font-medium">Source File</label>
-              <input 
-                type="file" 
-                onChange={(e) => setSource(e.target.files[0]?.name || '')} 
-                className="w-full border px-3 py-2 rounded-md"
-                required
-              />
+              <label className="block text-sm font-medium">Source File Location</label>
+              <div className="flex">
+                <input 
+                  type="text" 
+                  value={source} 
+                  onChange={(e) => setSource(e.target.value)} 
+                  className="w-full border px-3 py-2 rounded-l-md"
+                  required
+                />
+                <button 
+                  type="button" 
+                  onClick={handlePaste} 
+                  className="bg-gray-200 px-4 py-2 rounded-r-md border-l hover:bg-gray-300 transition duration-200"
+                >
+                  Paste
+                </button>
+              </div>
             </div>
           )}
         </div>
