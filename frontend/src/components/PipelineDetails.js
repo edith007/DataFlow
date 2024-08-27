@@ -51,7 +51,15 @@ const PipelineDetails = () => {
       <p><strong>Description:</strong> {pipeline.description}</p>
       <p><strong>Source:</strong> {pipeline.source}</p>
       <p><strong>Destination:</strong> {pipeline.destination}</p>
-      <p><strong>Status:</strong> {pipeline.status}</p>
+      <p><strong>Status:</strong> 
+        <span className={`ml-2 px-2 py-1 rounded text-white ${
+          pipeline.status === 'Running' ? 'bg-yellow-500' :
+          pipeline.status === 'Completed' ? 'bg-green-500' :
+          pipeline.status === 'Failed' ? 'bg-red-500' : 'bg-gray-500'
+        }`}>
+          {pipeline.status}
+        </span>
+      </p>
       <div className="mt-4">
         <button 
           onClick={runPipeline} 

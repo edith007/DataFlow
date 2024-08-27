@@ -2,8 +2,10 @@ import os
 import requests
 import pandas as pd
 import sqlalchemy
+from flask_socketio import emit
 from sqlalchemy import create_engine
 from app.models import db, Pipeline
+from app import socketio
 from datetime import datetime, timezone
 
 def fetch_data(source):
@@ -68,8 +70,8 @@ def run_pipeline(pipeline_id):
         print(
             f"Running pipeline {pipeline_id}: Fetching data from source {pipeline.source}"
         )
+        emit_status_update(pipeline_id, "Running")
         data = fetch_data(pipeline.source)
-        # No transformation step is applied here
         print(
             f"Pipeline {pipeline_id}: Loading data to destination {pipeline.destination}"
         )
@@ -79,15 +81,21 @@ def run_pipeline(pipeline_id):
         pipeline.last_run = datetime.now(timezone.utc)
         pipeline.error_message = None
         print(f"Pipeline {pipeline_id} completed successfully.")
+        emit_status_update(pipeline_id, "Completed")
     except Exception as e:
         pipeline.status = "Failed"
-        pipeline.error_message = str(
-            e
-        )
+        pipeline.error_message = str(e)
         print(f"Pipeline {pipeline_id} failed due to error: {e}")
+        emit_status_update(pipeline_id, "Failed")
         raise e
     finally:
         db.session.commit()
+
+def emit_status_update(pipeline_id, status):
+    """
+    Emits a status update for a specific pipeline.
+    """
+    socketio.emit("pipeline_status", {"pipeline_id": pipeline_id, "status": status})
 
 def get_current_stage():
     # This is a helper function to determine where the error occurred
