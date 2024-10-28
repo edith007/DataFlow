@@ -1,2 +1,3 @@
 tap-mysql
 singer-python==5.9.0
+pymysql>=1.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
